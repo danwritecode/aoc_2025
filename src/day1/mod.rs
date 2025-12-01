@@ -1,3 +1,5 @@
+use std::{convert::Infallible, str::FromStr};
+
 const UPPER_LIMIT: i32 = 99;
 const LOWER_LIMIT: i32 = 0;
 
@@ -7,6 +9,33 @@ enum Direction {
     Right
 }
 
+impl FromStr for Direction {
+    type Err = Infallible;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let direction = match s {
+            "L" => Direction::Left,
+            "R" => Direction::Right,
+            _ => panic!("Unhandled direction")
+        };
+
+        Ok(direction)
+    }
+}
+
+impl Direction {
+    fn apply_movement(&self, pos: i32, dist: i32) -> u32 {
+        match &self {
+            Direction::Left => {
+                return (pos - dist).rem_euclid(100) as u32;
+            },
+            Direction::Right => {
+                return (pos + dist).rem_euclid(100) as u32;
+            }
+        }
+    }
+}
+
 pub fn day_one_pt_one() {
     let input = std::fs::read_to_string("src/day1/input")
         .unwrap()
@@ -14,11 +43,7 @@ pub fn day_one_pt_one() {
         .map(|l| {
             let (direction, distance) = l.split_at(1);
             let distance: i32 = distance.parse().unwrap();
-            let direction = match direction {
-                "L" => Direction::Left,
-                "R" => Direction::Right,
-                _ => panic!("Unhandled direction")
-            };
+            let direction = direction.parse::<Direction>().unwrap();
 
             return (direction, distance)
         })
@@ -28,16 +53,7 @@ pub fn day_one_pt_one() {
     let mut ct_zero = 0;
 
     for (dir, dist) in input.iter() {
-        match dir {
-            Direction::Left => {
-                let result = sub_wrapping(pos as i32, *dist);
-                pos = result.pos;
-            },
-            Direction::Right => {
-                let result = add_wrapping(pos as i32, *dist);
-                pos = result.pos;
-            }
-        };
+        pos = dir.apply_movement(pos as i32, *dist as i32);
 
         if pos == 0 {
             ct_zero += 1;
@@ -54,11 +70,7 @@ pub fn day_one_pt_two() {
         .map(|l| {
             let (direction, distance) = l.split_at(1);
             let distance: i32 = distance.parse().unwrap();
-            let direction = match direction {
-                "L" => Direction::Left,
-                "R" => Direction::Right,
-                _ => panic!("Unhandled direction")
-            };
+            let direction = direction.parse::<Direction>().unwrap();
 
             return (direction, distance)
         })
