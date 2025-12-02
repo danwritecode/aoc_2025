@@ -63,6 +63,7 @@ pub fn day_one_pt_one() {
     println!("{}", ct_zero);
 }
 
+// TODO: Refactor to utilize rem_euclid
 pub fn day_one_pt_two() {
     let input = std::fs::read_to_string("src/day1/input")
         .unwrap()
