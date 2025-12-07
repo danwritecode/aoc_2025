@@ -1,5 +1,3 @@
-const RADIX: u32 = 10;
-
 #[derive(Debug)]
 enum GridItem {
     Roll,
@@ -227,8 +225,6 @@ fn direction_check(
             }
         }
     };
-
-    // println!("Checking: {:?} for ({}, {}) found {:?}", direction, x, y, pos);
 
     match pos {
         GridItem::Roll => 1,
