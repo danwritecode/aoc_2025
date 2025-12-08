@@ -117,14 +117,10 @@ pub fn day_six_pt_two() {
 
         chunk.reverse();
 
-        println!("chunk: {:?}", chunk);
-
         let num_chunks = chunk
             .iter()
             .map(|c| c.iter().collect::<String>().trim().to_string().parse::<i64>().unwrap())
             .collect::<Vec<i64>>();
-
-        println!("{:?}", num_chunks);
 
         if let Some(opp) = operation {
             let res = match opp {
