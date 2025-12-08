@@ -1,4 +1,5 @@
 const RADIX: u32 = 10;
+const INPUT_LEN: u8 = 15;
 
 #[derive(Debug)]
 struct Largest {
@@ -31,11 +32,11 @@ pub fn day_three_pt_two() {
     let total: u32 = input
         .iter()
         .map(|r| {
-            let fl = find_largest(&r, 0, 1);
-            let sl = find_largest(&r, fl.found_idx + 1, 0);
-            let total = format!("{}{}", fl.value, sl.value).parse::<u32>().unwrap();
+            for (i, n) in r.iter().enumerate() {
+                                                 
+            }
 
-            total
+            todo!()
         })
         .collect::<Vec<u32>>()
         .iter()
@@ -44,15 +45,11 @@ pub fn day_three_pt_two() {
     println!("{}", total);
 }
 
-fn parse_input() -> Vec<Vec<u32>> {
-    std::fs::read_to_string("src/day3/input")
-        .unwrap()
-        .lines()
-        .map(|l| l.to_owned().chars().map(|c| c.to_digit(RADIX).unwrap()).collect::<Vec<u32>>())
-        .collect::<Vec<_>>()
-}
-
-fn find_largest(nums: &Vec<u32>, starting_idx: usize, ignore_end_size: usize) -> Largest {
+fn find_largest(
+    nums: &Vec<u32>, 
+    starting_idx: usize, 
+    ignore_end_size: usize
+) -> Largest {
     let mut largest = 0;
     let mut largest_idx = 0;
     let take = nums.len() - starting_idx - ignore_end_size;
@@ -67,6 +64,29 @@ fn find_largest(nums: &Vec<u32>, starting_idx: usize, ignore_end_size: usize) ->
     Largest { found_idx: largest_idx, value: largest }
 }
 
+fn find_largest_simple(
+    nums: &Vec<u32>, 
+) -> Largest {
+    let mut largest = 0;
+    let mut largest_idx = 0;
+
+    for (i, n) in nums.iter().enumerate() {
+        if *n > largest {
+            largest = *n;
+            largest_idx = i;
+        }
+    }
+
+    Largest { found_idx: largest_idx, value: largest }
+}
+
+fn parse_input() -> Vec<Vec<u32>> {
+    std::fs::read_to_string("src/day3/input")
+        .unwrap()
+        .lines()
+        .map(|l| l.to_owned().chars().map(|c| c.to_digit(RADIX).unwrap()).collect::<Vec<u32>>())
+        .collect::<Vec<_>>()
+}
 
 #[cfg(test)]
 mod tests {
